@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import axios from 'axios'
+import { getAutoIcon, getAllIcons } from '../utils/iconLibrary'
 import './Admin.css'
 
 function Admin() {
@@ -34,6 +35,26 @@ function Admin() {
   })
   const [passwordErrors, setPasswordErrors] = useState({})
   const [updatingPassword, setUpdatingPassword] = useState(false)
+  
+  // 图标选择状态
+  const [showIconSelector, setShowIconSelector] = useState(false)
+  const [selectedSkillIndex, setSelectedSkillIndex] = useState(null)
+  const [allIcons, setAllIcons] = useState(getAllIcons())
+  const [filteredIcons, setFilteredIcons] = useState(getAllIcons())
+  const [searchIcons, setSearchIcons] = useState('')
+  
+  // 图标搜索过滤
+  useEffect(() => {
+    if (!searchIcons.trim()) {
+      setFilteredIcons(allIcons)
+      return
+    }
+    
+    // 由于图标是字符，我们搜索图标对应的Unicode名称或关键字
+    // 这里我们使用一个简单的过滤方法，实际可以根据需求扩展
+    const searchTerm = searchIcons.toLowerCase().trim()
+    setFilteredIcons(allIcons)
+  }, [searchIcons, allIcons])
 
   useEffect(() => {
     if (!authLoading && !isAdmin) {
@@ -187,13 +208,20 @@ function Admin() {
   const addSkill = () => {
     setProfile(prev => ({
       ...prev,
-      skills: [...prev.skills, { name: '', icon: '🔧', level: 80 }]
+      skills: [...prev.skills, { name: '', icon: '�', level: 80 }]
     }))
   }
 
   const updateSkill = (index, field, value) => {
     const newSkills = [...profile.skills]
     newSkills[index][field] = value
+    
+    // 当技能名称改变时，自动匹配图标
+    if (field === 'name') {
+      const autoIcon = getAutoIcon(value)
+      newSkills[index].icon = autoIcon
+    }
+    
     setProfile(prev => ({ ...prev, skills: newSkills }))
   }
 
@@ -398,13 +426,24 @@ function Admin() {
                 {profile.skills.map((skill, index) => (
                   <div key={index} className="item-row glass-card">
                     <div className="item-fields">
-                      <input
-                        type="text"
-                        className="glass-input icon-input"
-                        placeholder="图标"
-                        value={skill.icon}
-                        onChange={(e) => updateSkill(index, 'icon', e.target.value)}
-                      />
+                      <div className="icon-input-container">
+                        <input
+                          type="text"
+                          className="glass-input icon-input"
+                          placeholder="图标"
+                          value={skill.icon}
+                          onChange={(e) => updateSkill(index, 'icon', e.target.value)}
+                        />
+                        <button 
+                          className="icon-select-btn"
+                          onClick={() => {
+                            setSelectedSkillIndex(index)
+                            setShowIconSelector(true)
+                          }}
+                        >
+                          🎨
+                        </button>
+                      </div>
                       <input
                         type="text"
                         className="glass-input"
@@ -431,6 +470,51 @@ function Admin() {
                   <p className="empty-text">暂无技能，点击上方按钮添加</p>
                 )}
               </div>
+              
+              {/* 图标选择器 */}
+              {showIconSelector && (
+                <div className="icon-selector-overlay" onClick={() => setShowIconSelector(false)}>
+                  <div className="icon-selector glass-card" onClick={(e) => e.stopPropagation()}>
+                    <div className="icon-selector-header">
+                      <h3>选择图标</h3>
+                      <button 
+                        className="close-btn"
+                        onClick={() => setShowIconSelector(false)}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="icon-selector-search">
+                      <input
+                        type="text"
+                        className="glass-input"
+                        placeholder="搜索图标..."
+                        value={searchIcons}
+                        onChange={(e) => setSearchIcons(e.target.value)}
+                      />
+                    </div>
+                    <div className="icon-grid">
+                      {filteredIcons.map((icon, idx) => (
+                        <button
+                          key={idx}
+                          className="icon-item"
+                          onClick={() => {
+                            updateSkill(selectedSkillIndex, 'icon', icon)
+                            setShowIconSelector(false)
+                            setSearchIcons('')
+                          }}
+                          title={`选择图标: ${icon}`}
+                        >
+                          {icon}
+                        </button>
+                      ))}
+                    </div>
+                    {filteredIcons.length === 0 && (
+                      <p className="no-icons">没有找到匹配的图标</p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
