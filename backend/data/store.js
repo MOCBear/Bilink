@@ -13,6 +13,7 @@ import fs from 'fs' // 文件系统模块
 import path from 'path' // 路径模块
 import { fileURLToPath } from 'url' // URL 工具模块
 import bcrypt from 'bcryptjs' // 密码加密模块
+import { dbManager } from './db.js' // 数据库管理器
 
 // 获取当前文件和目录路径
 const __filename = fileURLToPath(import.meta.url)
@@ -103,6 +104,7 @@ export function saveData(data) {
  * 初始化数据存储
  * 
  * 如果数据文件不存在，则创建新的默认数据文件
+ * 同时将管理员用户添加到数据库中
  * 
  * @returns {Promise<Object>} 初始化后的数据对象
  */
@@ -128,6 +130,13 @@ export async function initializeData() {
     console.log(`🔑 Admin password: ${password}`)
   }
   
+  // 初始化数据库，添加管理员用户
+  const admin = {
+    username: process.env.ADMIN_USERNAME || data.admin.username,
+    password: process.env.ADMIN_PASSWORD || 'admin123'
+  }
+  await dbManager.addAdmin(admin)
+  
   return data
 }
 
@@ -137,8 +146,8 @@ export async function initializeData() {
  * @returns {Object|null} 管理员用户对象，如果不存在则返回 null
  */
 export function getAdmin() {
-  const data = loadData()
-  return data?.admin || null
+  // 从数据库中获取管理员用户信息
+  return dbManager.getAdmin()
 }
 
 /**
@@ -174,16 +183,8 @@ export function updateProfile(profileData) {
  * @returns {boolean} 更新是否成功
  */
 export function updateAdmin(adminData) {
-  const data = loadData()
-  if (data) {
-    // 只更新用户名，不更新密码
-    data.admin = {
-      ...data.admin,
-      username: adminData.username || data.admin.username
-    }
-    return saveData(data)
-  }
-  return false
+  // 使用数据库更新管理员账户信息
+  return dbManager.updateAdmin(adminData)
 }
 
 /**
@@ -194,27 +195,6 @@ export function updateAdmin(adminData) {
  * @returns {Object} 包含成功状态和消息的对象
  */
 export async function updatePassword(currentPassword, newPassword) {
-  const data = loadData()
-  if (!data) {
-    return { success: false, message: '数据加载失败' }
-  }
-
-  // 验证当前密码
-  const isValidPassword = await bcrypt.compare(currentPassword, data.admin.password)
-  if (!isValidPassword) {
-    return { success: false, message: '当前密码错误' }
-  }
-
-  // 加密新密码
-  const hashedPassword = await bcrypt.hash(newPassword, 10)
-  
-  // 更新密码
-  data.admin.password = hashedPassword
-  const saveSuccess = saveData(data)
-
-  if (saveSuccess) {
-    return { success: true, message: '密码更新成功' }
-  } else {
-    return { success: false, message: '密码更新失败' }
-  }
+  // 使用数据库更新管理员密码
+  return dbManager.updatePassword(currentPassword, newPassword)
 }

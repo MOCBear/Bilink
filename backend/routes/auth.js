@@ -2,6 +2,7 @@ import express from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { getAdmin, updateAdmin, updatePassword } from '../data/store.js'
+import { dbManager } from '../data/db.js'
 import { authMiddleware, adminOnly } from '../middleware/auth.js'
 
 const router = express.Router()
@@ -15,13 +16,14 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: '请输入用户名和密码' })
     }
 
-    const admin = getAdmin()
+    // 从数据库中获取用户信息
+    const user = dbManager.getUserByUsername(username)
     
-    if (!admin || admin.username !== username) {
+    if (!user) {
       return res.status(401).json({ message: '用户名或密码错误' })
     }
 
-    const isValidPassword = await bcrypt.compare(password, admin.password)
+    const isValidPassword = await bcrypt.compare(password, user.password)
     
     if (!isValidPassword) {
       return res.status(401).json({ message: '用户名或密码错误' })
@@ -29,8 +31,8 @@ router.post('/login', async (req, res) => {
 
     const token = jwt.sign(
       { 
-        username: admin.username, 
-        role: admin.role 
+        username: user.username, 
+        role: user.role 
       },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
@@ -39,8 +41,8 @@ router.post('/login', async (req, res) => {
     res.json({
       token,
       user: {
-        username: admin.username,
-        role: admin.role
+        username: user.username,
+        role: user.role
       }
     })
   } catch (err) {
