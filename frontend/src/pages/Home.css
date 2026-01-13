@@ -327,6 +327,47 @@
   height: 20px;
 }
 
+/* Login Trigger */
+.login-trigger-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.login-trigger-container.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.login-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.login-trigger:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .hero-card {

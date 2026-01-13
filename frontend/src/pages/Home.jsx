@@ -13,42 +13,96 @@ function Home() {
     fetchProfile()
   }, [])
 
-  /**
-   * 初始化点击事件监听器
-   * 
-   * 监听页面点击事件，当点击次数达到3次时，显示登录按钮
-   */
-  useEffect(() => {
-    const handleClick = () => {
-      setClickCount(prev => {
-        const newCount = prev + 1
-        if (newCount >= 3) {
-          setShowLogin(true)
-        }
-        return newCount
-      })
-    }
-
-    const container = containerRef.current
-    if (container) {
-      container.addEventListener('click', handleClick)
-    }
-
-    return () => {
-      if (container) {
-        container.removeEventListener('click', handleClick)
-      }
-    }
-  }, [])
+  // 用于存储点击超时定时器
+  const clickTimeoutRef = useRef(null)
+  // 用于存储点击动画定时器
+  const animationTimeoutRef = useRef(null)
+  // 用于获取版权信息元素
+  const copyrightRef = useRef(null)
 
   /**
    * 处理版权信息点击事件
    * 
-   * 点击版权信息文本时，显示登录按钮
+   * 实现连续点击计数，3次点击后显示登录按钮
+   * 两次点击间隔超过3秒则重置计数
    */
   const handleCopyrightClick = () => {
-    setShowLogin(true)
+    // 清除之前的超时定时器
+    if (clickTimeoutRef.current) {
+      clearTimeout(clickTimeoutRef.current)
+    }
+
+    // 视觉反馈：添加点击动画
+    if (copyrightRef.current) {
+      copyrightRef.current.style.transform = 'scale(0.95)'
+      copyrightRef.current.style.transition = 'transform 0.1s ease'
+      
+      // 清除之前的动画定时器
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current)
+      }
+      
+      // 恢复原始大小
+      animationTimeoutRef.current = setTimeout(() => {
+        if (copyrightRef.current) {
+          copyrightRef.current.style.transform = 'scale(1)'
+        }
+      }, 100)
+    }
+
+    // 更新点击计数
+    setClickCount(prev => {
+      const newCount = prev + 1
+      if (newCount >= 3) {
+        setShowLogin(true)
+        return 0 // 重置计数，防止继续点击
+      }
+      return newCount
+    })
+
+    // 设置3秒超时定时器，超时后重置计数
+    clickTimeoutRef.current = setTimeout(() => {
+      setClickCount(0)
+    }, 3000)
   }
+
+  // 组件卸载时清除定时器
+  useEffect(() => {
+    return () => {
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current)
+      }
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current)
+      }
+    }
+  }, [])
+
+  // 添加防抖动的触摸事件监听器（用于移动端）
+  useEffect(() => {
+    const copyrightElement = copyrightRef.current
+    if (!copyrightElement) return
+
+    let lastTouchEnd = 0
+    
+    const handleTouchEnd = (e) => {
+      const now = (new Date()).getTime()
+      // 防抖动：忽略300ms内的连续触摸
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault()
+        return
+      }
+      lastTouchEnd = now
+      handleCopyrightClick()
+    }
+
+    // 添加触摸事件监听器
+    copyrightElement.addEventListener('touchend', handleTouchEnd, { passive: false })
+
+    return () => {
+      copyrightElement.removeEventListener('touchend', handleTouchEnd)
+    }
+  }, [])
 
   const fetchProfile = async () => {
     try {
@@ -258,9 +312,10 @@ function Home() {
         <footer className="footer">
           <div className="glass-card footer-card">
             <p 
+              ref={copyrightRef}
               className="copyright-text" 
               onClick={handleCopyrightClick}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', transition: 'transform 0.1s ease' }}
             >
               © {new Date().getFullYear()} {profile?.name || 'Bilink'}. All rights reserved.
             </p>
