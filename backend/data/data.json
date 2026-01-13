@@ -1,0 +1,75 @@
+{
+  "admin": {
+    "username": "admin",
+    "password": "$2a$10$NG3t4iXPugCU4s/SqS.sl.qTko02eIhLX53vYWtWTDuzhAUfzAahm",
+    "role": "admin"
+  },
+  "profile": {
+    "name": "Your Name",
+    "title": "Creative Developer",
+    "bio": "Welcome to my personal space. I create digital experiences.",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=bilink",
+    "about": "热爱技术，专注于创造优秀的数字体验。我相信好的设计和代码可以让世界变得更美好。",
+    "skills": [
+      {
+        "name": "JavaScript",
+        "icon": "🟨",
+        "level": 90
+      },
+      {
+        "name": "React",
+        "icon": "⚛️",
+        "level": 85
+      },
+      {
+        "name": "Node.js",
+        "icon": "💚",
+        "level": 80
+      },
+      {
+        "name": "Python",
+        "icon": "🐍",
+        "level": 75
+      },
+      {
+        "name": "UI/UX",
+        "icon": "🎨",
+        "level": 70
+      }
+    ],
+    "projects": [
+      {
+        "title": "个人主页",
+        "description": "一个现代化的个人展示页面，采用液态玻璃效果设计。",
+        "url": "#",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400",
+        "tags": [
+          "React",
+          "Node.js",
+          "CSS"
+        ]
+      }
+    ],
+    "links": [
+      {
+        "type": "github",
+        "label": "GitHub",
+        "url": "https://github.com"
+      },
+      {
+        "type": "twitter",
+        "label": "Twitter",
+        "url": "https://twitter.com"
+      },
+      {
+        "type": "email",
+        "label": "Email",
+        "url": "mailto:hello@example.com"
+      }
+    ],
+    "contact": {
+      "email": "hello@example.com",
+      "location": "中国"
+    }
+  }
+}

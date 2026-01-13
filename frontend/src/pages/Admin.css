@@ -1,0 +1,449 @@
+.admin-page {
+  min-height: 100vh;
+  padding-bottom: 100px;
+}
+
+/* Header */
+.admin-header {
+  padding-top: 40px;
+  margin-bottom: 24px;
+}
+
+.header-card {
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.header-left h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.header-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.badge-icon {
+  font-size: 1.1rem;
+}
+
+.logout-btn {
+  padding: 10px 20px;
+  background: rgba(248, 113, 113, 0.2);
+  border-color: rgba(248, 113, 113, 0.3);
+}
+
+.logout-btn:hover {
+  background: rgba(248, 113, 113, 0.3);
+}
+
+/* Navigation */
+.admin-nav {
+  margin-bottom: 24px;
+}
+
+.nav-card {
+  padding: 8px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.nav-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.nav-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-light);
+}
+
+.nav-tab.active {
+  background: var(--primary-gradient);
+  color: white;
+}
+
+.tab-icon {
+  font-size: 1.2rem;
+}
+
+/* Content Area */
+.admin-content {
+  margin-bottom: 24px;
+}
+
+.content-card {
+  padding: 32px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.card-header .card-title {
+  margin-bottom: 0;
+}
+
+.content-card > .card-title {
+  margin-bottom: 24px;
+}
+
+/* Form Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Add Button */
+.add-btn {
+  padding: 10px 18px;
+  font-size: 0.9rem;
+}
+
+/* Items List */
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.item-row:hover {
+  transform: none;
+}
+
+.item-fields {
+  flex: 1;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.item-fields .glass-input {
+  flex: 1;
+  min-width: 120px;
+}
+
+.icon-input {
+  max-width: 80px !important;
+  flex: 0 !important;
+  text-align: center;
+}
+
+.level-input {
+  max-width: 100px !important;
+  flex: 0 !important;
+}
+
+.type-select {
+  max-width: 140px !important;
+  flex: 0 !important;
+}
+
+.url-input {
+  flex: 2 !important;
+}
+
+.remove-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(248, 113, 113, 0.2);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 10px;
+  color: #fca5a5;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.remove-btn:hover {
+  background: rgba(248, 113, 113, 0.3);
+  color: #f87171;
+}
+
+/* Project Item */
+.project-item {
+  padding: 24px;
+  position: relative;
+}
+
+.project-item:hover {
+  transform: none;
+}
+
+.project-fields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.project-fields .full-width {
+  grid-column: span 2;
+}
+
+.project-remove {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+/* Empty State */
+.empty-text {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 40px;
+  font-size: 0.95rem;
+}
+
+/* Save Area */
+.save-area {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px;
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+.save-btn {
+  padding: 14px 28px;
+}
+
+.preview-btn {
+  padding: 14px 24px;
+}
+
+/* Loading */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.spinner-large {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Spinner in button */
+.save-btn .spinner,
+.logout-btn .spinner,
+.account-btn .spinner,
+.password-btn .spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Account Management */
+.account-section {
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.password-section {
+  margin-top: 24px;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 20px;
+}
+
+.account-btn,
+.password-btn {
+  margin-top: 24px;
+  padding: 12px 24px;
+}
+
+/* Password Requirements */
+.password-requirements {
+  margin: 20px 0;
+  padding: 16px;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 12px;
+  border-left: 4px solid var(--accent-color);
+}
+
+.password-requirements h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 8px;
+}
+
+.password-requirements ul {
+  list-style-position: inside;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
+}
+
+.password-requirements li {
+  margin-bottom: 4px;
+}
+
+/* Error Messages */
+.error-message {
+  font-size: 0.8rem;
+  color: #f87171;
+  margin-top: 4px;
+}
+
+/* Input Field States */
+.glass-input:disabled {
+  background: rgba(255, 255, 255, 0.05);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .header-left h1 {
+    font-size: 1.5rem;
+  }
+
+  .nav-card {
+    flex-wrap: nowrap;
+    padding-bottom: 8px;
+  }
+
+  .nav-tab {
+    padding: 12px 16px;
+  }
+
+  .tab-label {
+    display: none;
+  }
+
+  .content-card {
+    padding: 24px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full-width {
+    grid-column: span 1;
+  }
+
+  .item-fields {
+    flex-direction: column;
+  }
+
+  .item-fields .glass-input {
+    width: 100%;
+    max-width: none !important;
+  }
+
+  .project-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .project-fields .full-width {
+    grid-column: span 1;
+  }
+
+  .save-area {
+    left: 16px;
+    right: 16px;
+    transform: none;
+    justify-content: center;
+  }
+}
